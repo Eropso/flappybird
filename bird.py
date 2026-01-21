@@ -6,6 +6,14 @@ class Bird(GameObject):
         self._gravity = gravity
         self._jump = jump
 
+    def update(self):
+        self._velocity += self._gravity
+        self._y += self._velocity
+
+    def jump(self):
+        self._velocity = -self._jump
+
+
 
 
         

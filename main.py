@@ -18,18 +18,22 @@ klokke = pg.time.Clock()
 fps = 60
 fortsett = True
 
-bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 7, 7, 7)
+bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
 
 while fortsett:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             fortsett = False
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                bird.jump()
 
 
 
     vindu.fill((0, 0, 0))
 
-    bird.draw()
+    bird.update()
+    bird.draw(vindu)
 
 
 
