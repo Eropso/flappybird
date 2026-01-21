@@ -1,4 +1,5 @@
 import pygame as pg
+from bird import Bird
 
 pg.init()
 
@@ -17,6 +18,8 @@ klokke = pg.time.Clock()
 fps = 60
 fortsett = True
 
+bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 7, 7, 7)
+
 while fortsett:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -25,6 +28,8 @@ while fortsett:
 
 
     vindu.fill((0, 0, 0))
+
+    bird.draw()
 
 
 
