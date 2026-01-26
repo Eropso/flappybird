@@ -1,5 +1,7 @@
 import pygame as pg
+import random
 from bird import Bird
+from pipe import Pipe
 
 pg.init()
 
@@ -20,6 +22,10 @@ fortsett = True
 
 bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
 
+pipes = []
+last_spawn = pg.time.get_ticks()
+spawn_frequency = 1500
+
 while fortsett:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -28,9 +34,28 @@ while fortsett:
             if event.key == pg.K_SPACE:
                 bird.jump()
 
+    time_now = pg.time.get_ticks()
+    if time_now - last_spawn > spawn_frequency:
+        height = random.randint(50, 400)
+        top_pipe = Pipe(600, 0, 50, height, 3)
+        bottom_pipe = Pipe(600, height + 150, 50, 600 - height - 150, 3)
+        pipes.extend([top_pipe, bottom_pipe])
+        last_spawn = time_now
+
 
 
     vindu.fill((0, 0, 0))
+
+    for pipe in pipes:
+        pipe.update()
+        pipe.draw(vindu)
+    
+    active_pipes = []
+    for pipe in pipes:
+        if pipe._x + pipe._width > 0:
+            active_pipes.append(pipe)
+    
+    pipes = active_pipes
 
     bird.update()
     bird.draw(vindu)
