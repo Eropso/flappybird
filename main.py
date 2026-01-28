@@ -52,7 +52,7 @@ while fortsett:
     
     active_pipes = []
     for pipe in pipes:
-        if pipe._x + pipe._width > 0:
+        if pipe.rect.right > 0:
             active_pipes.append(pipe)
     
     pipes = active_pipes
@@ -60,7 +60,7 @@ while fortsett:
     bird.update()
     bird.draw(vindu)
 
-
+    bird.check_collision(pipes)
 
     pg.display.update()
     klokke.tick(fps)

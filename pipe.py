@@ -5,7 +5,4 @@ class Pipe(GameObject):
         self._speed = speed
 
     def update(self):
-        self._x -= self._speed
-    
-    
-
+        self.rect.x -= self._speed
