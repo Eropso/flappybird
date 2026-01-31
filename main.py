@@ -42,23 +42,23 @@ while fortsett:
                 game_state = "start"
                 last_spawn = pg.time.get_ticks()
 
-    vindu.fill((0, 0, 0))
+    vindu.fill((135, 206, 250))
 
     if game_state == "playing":
         time_now = pg.time.get_ticks()
         if time_now - last_spawn > spawn_frequency:
             height = random.randint(50, 400)
-            top_pipe = Pipe(600, -2000, 50, height + 2000, 3)
-            bottom_pipe = Pipe(600, height + 150, 50, 600 - height - 150, 3)
+            top_pipe = Pipe(600, 0, 140, height, 3, flip=True)
+            bottom_pipe = Pipe(600, height + 150, 140, 600 - height - 150, 3)
             pipes.extend([top_pipe, bottom_pipe])
             last_spawn = time_now
 
         for pipe in pipes:
             pipe.update()
 
-            if not pipe.passed and pipe.rect.right < bird.rect.left:
+            if not pipe.passed and (pipe.rect.right - 44) < bird.rect.left:
                 pipe.passed = True
-                if pipe.rect.top < 0:
+                if pipe.rect.top == 0:
                     score += 1
         
         active_pipes = [] 
