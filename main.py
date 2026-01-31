@@ -32,7 +32,7 @@ while fortsett:
     time_now = pg.time.get_ticks()
     if time_now - last_spawn > spawn_frequency:
         height = random.randint(50, 400)
-        top_pipe = Pipe(600, 0, 50, height, 3)
+        top_pipe = Pipe(600, -2000, 50, height + 2000, 3)
         bottom_pipe = Pipe(600, height + 150, 50, 600 - height - 150, 3)
         pipes.extend([top_pipe, bottom_pipe])
         last_spawn = time_now
@@ -47,7 +47,7 @@ while fortsett:
 
         if not pipe.passed and pipe.rect.right < bird.rect.left:
             pipe.passed = True
-            if pipe.rect.top == 0:
+            if pipe.rect.top < 0:
                 score += 1
     
     active_pipes = [] 
@@ -64,7 +64,7 @@ while fortsett:
     score_rect = score_text.get_rect(center=(VINDU_BREDDE/2, 50))
     vindu.blit(score_text, score_rect)
 
-    bird.check_collision(pipes)
+    bird.check_collision(pipes, VINDU_HOYDE)
 
     pg.display.update()
     klokke.tick(fps)

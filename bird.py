@@ -12,7 +12,14 @@ class Bird(GameObject):
         self.y += self._velocity
         self.rect.y = self.y
 
-    def check_collision(self, pipes):
+    def check_collision(self, pipes, window_height):
+        if self.rect.bottom >= window_height:
+            self._velocity = 0
+            self._gravity = 0
+            self._jump = 0
+            for p in pipes:
+                p._speed = 0
+
         for pipe in pipes:
             if self.rect.colliderect(pipe.rect):
                 self._velocity = 0
