@@ -8,19 +8,14 @@ pg.init()
 VINDU_BREDDE = 600
 VINDU_HOYDE = 600
 
-font = pg.font.SysFont('Impact', 24)
-
-
-
-score = font.render("1", True, "black")
-score_rect = score.get_rect(center=(VINDU_BREDDE/2, 50))
-
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 klokke = pg.time.Clock()
 fps = 60
 fortsett = True
 
 bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
+score = 0
+font = pg.font.SysFont('Impact', 24)
 
 pipes = []
 last_spawn = pg.time.get_ticks()
@@ -49,8 +44,13 @@ while fortsett:
     for pipe in pipes:
         pipe.update()
         pipe.draw(vindu)
+
+        if not pipe.passed and pipe.rect.right < bird.rect.left:
+            pipe.passed = True
+            if pipe.rect.top == 0:
+                score += 1
     
-    active_pipes = []
+    active_pipes = [] 
     for pipe in pipes:
         if pipe.rect.right > 0:
             active_pipes.append(pipe)
@@ -59,6 +59,10 @@ while fortsett:
 
     bird.update()
     bird.draw(vindu)
+    
+    score_text = font.render(str(score), True, "white")
+    score_rect = score_text.get_rect(center=(VINDU_BREDDE/2, 50))
+    vindu.blit(score_text, score_rect)
 
     bird.check_collision(pipes)
 
