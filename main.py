@@ -30,7 +30,7 @@ while fortsett:
                 bird.jump()
 
     time_now = pg.time.get_ticks()
-    if time_now - last_spawn > spawn_frequency:
+    if bird._gravity != 0 and time_now - last_spawn > spawn_frequency:
         height = random.randint(50, 400)
         top_pipe = Pipe(600, -2000, 50, height + 2000, 3)
         bottom_pipe = Pipe(600, height + 150, 50, 600 - height - 150, 3)
