@@ -3,6 +3,7 @@ import random
 from bird import Bird
 from pipe import Pipe
 
+# Initializes pygame and sets up the window
 pg.init()
 
 VINDU_BREDDE = 600
@@ -15,21 +16,32 @@ fortsett = True
 
 die_sound = pg.mixer.Sound('explosion.mp3') 
 
+# Game variables
 bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
 score = 0
 font = pg.font.SysFont('Impact', 24)
 font_gameover = pg.font.SysFont('Impact', 60)
 font_start = pg.font.SysFont('Impact', 40)
 
+# Loads highscore from file
+try:
+    with open("highscore.txt", "r") as file:
+        highscore = int(file.read())
+except:
+    highscore = 0
+
 pipes = []
 last_spawn = pg.time.get_ticks()
 game_state = "start"
 
+# Main game loop
 while fortsett:
+    # Handles events (keypresses, closing)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             fortsett = False
         
+        # Checks input to jump or start the game
         if (event.type == pg.KEYDOWN and event.key == pg.K_SPACE) or event.type == pg.MOUSEBUTTONDOWN:
             if game_state == "start":
                 game_state = "playing"
@@ -49,6 +61,7 @@ while fortsett:
         vindu.fill((135, 206, 250))
         
     if game_state == "playing":
+        # Increases difficulty based on score
         if score >= 10:
             pipe_speed = 5.5
             spawn_delay = 900
@@ -59,6 +72,7 @@ while fortsett:
             pipe_speed = 3
             spawn_delay = 1500
 
+        # Creates new pipes at regular intervals
         time_now = pg.time.get_ticks()
         if time_now - last_spawn > spawn_delay:
             height = random.randint(50, 400)
@@ -67,6 +81,7 @@ while fortsett:
             pipes.extend([top_pipe, bottom_pipe])
             last_spawn = time_now
 
+        # Updates and removes pipes
         for pipe in pipes:
             pipe._speed = pipe_speed
             pipe.update()
@@ -82,13 +97,19 @@ while fortsett:
                 active_pipes.append(pipe)
         pipes = active_pipes
 
+        # Checks for collisions
         bird.update()
         bird.check_collision(pipes, VINDU_HOYDE)
         
         if bird._gravity == 0:
             game_state = "game_over"
             die_sound.play()
+            if score > highscore:
+                highscore = score
+                with open("highscore.txt", "w") as file:
+                    file.write(str(highscore))
 
+    # Draws everything on the screen
     for pipe in pipes:
         pipe.draw(vindu)
 
@@ -97,6 +118,9 @@ while fortsett:
     score_text = font.render(str(score), True, "white")
     score_rect = score_text.get_rect(center=(VINDU_BREDDE/2, 50))
     vindu.blit(score_text, score_rect)
+
+    highscore_text = font.render(f"Highscore: {highscore}", True, "white")
+    vindu.blit(highscore_text, (10, 10))
 
     if game_state == "start":
         start_text = font_start.render("Tap or Press SPACE", True, "white")
