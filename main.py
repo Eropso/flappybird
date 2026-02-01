@@ -13,6 +13,8 @@ klokke = pg.time.Clock()
 fps = 60
 fortsett = True
 
+die_sound = pg.mixer.Sound('explosion.mp3') 
+
 bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
 score = 0
 font = pg.font.SysFont('Impact', 24)
@@ -42,8 +44,11 @@ while fortsett:
                 game_state = "start"
                 last_spawn = pg.time.get_ticks()
 
-    vindu.fill((135, 206, 250))
-
+    if game_state == "game_over":
+        vindu.fill((0, 0, 0))
+    else:
+        vindu.fill((135, 206, 250))
+        
     if game_state == "playing":
         time_now = pg.time.get_ticks()
         if time_now - last_spawn > spawn_frequency:
@@ -72,6 +77,7 @@ while fortsett:
         
         if bird._gravity == 0:
             game_state = "game_over"
+            die_sound.play()
 
     for pipe in pipes:
         pipe.draw(vindu)
