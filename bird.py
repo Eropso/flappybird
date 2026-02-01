@@ -21,7 +21,7 @@ class Bird(GameObject):
                 p._speed = 0
 
         for pipe in pipes:
-            if self.rect.colliderect(pipe.rect.inflate(-88, 6)):
+            if self.rect.colliderect(pipe.rect.inflate(-88, 5)):
                 self._velocity = 0
                 self._gravity = 0
                 self._jump = 0

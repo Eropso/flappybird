@@ -23,7 +23,6 @@ font_start = pg.font.SysFont('Impact', 40)
 
 pipes = []
 last_spawn = pg.time.get_ticks()
-spawn_frequency = 1500
 game_state = "start"
 
 while fortsett:
@@ -50,15 +49,26 @@ while fortsett:
         vindu.fill((135, 206, 250))
         
     if game_state == "playing":
+        if score >= 10:
+            pipe_speed = 5.5
+            spawn_delay = 900
+        elif score >= 5:
+            pipe_speed = 4
+            spawn_delay = 1100
+        else:
+            pipe_speed = 3
+            spawn_delay = 1500
+
         time_now = pg.time.get_ticks()
-        if time_now - last_spawn > spawn_frequency:
+        if time_now - last_spawn > spawn_delay:
             height = random.randint(50, 400)
-            top_pipe = Pipe(600, 0, 140, height, 3, flip=True)
-            bottom_pipe = Pipe(600, height + 150, 140, 600 - height - 150, 3)
+            top_pipe = Pipe(600, 0, 140, height, pipe_speed, flip=True)
+            bottom_pipe = Pipe(600, height + 150, 140, 600 - height - 150, pipe_speed)
             pipes.extend([top_pipe, bottom_pipe])
             last_spawn = time_now
 
         for pipe in pipes:
+            pipe._speed = pipe_speed
             pipe.update()
 
             if not pipe.passed and (pipe.rect.right - 44) < bird.rect.left:
