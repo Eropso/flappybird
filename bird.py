@@ -2,9 +2,9 @@ from gameObject import GameObject
 
 # Class representing the bird
 class Bird(GameObject):
-    def __init__(self, x, y, width, height, velocity, gravity, jump):
-        super().__init__(x, y, width, height)
-        self.y = y
+    def __init__(self, x, y, width, height, velocity, gravity, jump, color):
+        super().__init__(x, y, width, height, color)
+        self._y = y
         self._velocity = velocity
         self._gravity = gravity
         self._jump = jump
@@ -12,8 +12,8 @@ class Bird(GameObject):
     # Updates position
     def update(self):
         self._velocity += self._gravity
-        self.y += self._velocity
-        self.rect.y = self.y
+        self._y += self._velocity
+        self.rect.y = self._y
 
     # Checks collision with pipes or floor/ceiling
     def check_collision(self, pipes, window_height):

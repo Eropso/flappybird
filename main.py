@@ -17,7 +17,7 @@ fortsett = True
 die_sound = pg.mixer.Sound('explosion.mp3') 
 
 # Game variables
-bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
+bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10, (255, 255, 255))
 score = 0
 font = pg.font.SysFont('Impact', 24)
 font_gameover = pg.font.SysFont('Impact', 60)
@@ -49,7 +49,7 @@ while fortsett:
             elif game_state == "playing":
                 bird.jump()
             elif game_state == "game_over":
-                bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10)
+                bird = Bird(75, VINDU_BREDDE/2-20, 20, 20, 0, 0.5, 10, (255, 255, 255))
                 pipes = []
                 score = 0
                 game_state = "start"
@@ -86,8 +86,8 @@ while fortsett:
             pipe._speed = pipe_speed
             pipe.update()
 
-            if not pipe.passed and (pipe.rect.right - 44) < bird.rect.left:
-                pipe.passed = True
+            if not pipe._passed and (pipe.rect.right - 44) < bird.rect.left:
+                pipe._passed = True
                 if pipe.rect.top == 0:
                     score += 1
         
